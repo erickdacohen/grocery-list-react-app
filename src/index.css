@@ -1,12 +1,27 @@
 :root {
 	--background-color-header: #f3ff51;
+	--background-color-li: #f3ff51;
+	--background-color-ul: #aaa;
 	--text-color-header: #000;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.sr-only {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
 }
 
 body {
 	min-height: 100vh;
-	padding: 0;
-	margin: 0;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 		sans-serif;
@@ -25,6 +40,29 @@ header {
 	align-items: center;
 	background: var(--background-color-header);
 	color: var(--text-color-header);
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+li {
+	height: 3.5rem;
+	width: 80%;
+	margin: 0.5rem;
+	list-style: none;
+	padding: 0.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: var(--background-color-li);
+}
+
+li input[type='checkbox'] {
+	width: 2rem;
+	height: 2rem;
+}
+
+li > svg:hover {
+	color: #aaa;
 }
 
 main {
@@ -32,4 +70,14 @@ main {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+ul {
+	padding: 1rem;
+	display: flex;
+	width: 80%;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--background-color-ul);
 }
