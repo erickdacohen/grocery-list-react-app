@@ -59,7 +59,7 @@ const Content = () => {
 					))}
 				</ul>
 			) : (
-				<h3>Nothing to see here.</h3>
+				<h3 className='empty-message'>Nothing to see here.</h3>
 			)}
 		</main>
 	)
