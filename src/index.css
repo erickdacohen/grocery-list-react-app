@@ -46,8 +46,10 @@ code {
 footer {
 	background-color: var(--background-color-footer);
 	margin-top: auto;
-	/* display: grid;
-	place-content: center; */
+	min-height: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 h3.empty-message {
@@ -95,9 +97,8 @@ main {
 ul {
 	padding: 1rem;
 	display: flex;
-	width: 80%;
+	width: 100%;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--background-color-ul);
 }

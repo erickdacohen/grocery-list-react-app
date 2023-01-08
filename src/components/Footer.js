@@ -1,7 +1,7 @@
-const Footer = ({ items }) => {
+const Footer = ({ length }) => {
 	return (
 		<footer>
-			<h2>Items: {items}</h2>
+			{length > 0 ? <h3>List items: {length}</h3> : <h3>Empty list</h3>}
 		</footer>
 	)
 }
