@@ -1,7 +1,7 @@
 import { FaRegTrashAlt } from 'react-icons/fa'
 const LineItem = ({ item, handleCheck, handleDelete }) => {
 	return (
-		<li key={item.id}>
+		<li>
 			<input
 				checked={item.isChecked}
 				onChange={() => handleCheck(item.id)}
