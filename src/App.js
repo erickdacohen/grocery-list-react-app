@@ -6,36 +6,63 @@ import { useState } from 'react'
 
 function App() {
 	// set state for items array
-	const [items, setItems] = useState([
-		{ id: 0, itemName: 'milk', isChecked: false },
-		{ id: 1, itemName: 'eggs', isChecked: false },
-		{ id: 2, itemName: 'tofu', isChecked: true },
-		{ id: 3, itemName: 'turkey', isChecked: false },
-		{ id: 4, itemName: 'oats', isChecked: true },
-	])
+	const [items, setItems] = useState(
+		JSON.parse(localStorage.getItem('groceryList'))
+	)
+
+	const [newItem, setNewItem] = useState('')
+
+	const setAndSaveItems = (newItems) => {
+		setItems(newItems)
+		// save items to local storage for now
+		localStorage.setItem('groceryList', JSON.stringify(newItems))
+	}
+
+	// function to add item
+	const addItem = (item) => {
+		// get what the id number should be (last of the length or one)
+		const id = items.length ? items[items.length - 1].id + 1 : 1
+		// build new item object
+		const myNewItem = { id: id, itemName: item, isChecked: false }
+		// add to the array
+		const listItems = [...items, myNewItem]
+		// update state with the new array
+		setAndSaveItems(listItems)
+	}
 
 	// function to handle checked list item
 	const handleCheck = (id) => {
 		const listItems = items.map((item) =>
 			item.id === id ? { ...item, isChecked: !item.isChecked } : item
 		)
-		setItems(listItems)
-		// save items to local storage for now
-		localStorage.setItem('groceryList', JSON.stringify(listItems))
+		setAndSaveItems(listItems)
 	}
 
 	// function to delete item from list
 	const handleDelete = (id) => {
 		const listItems = items.filter((item) => item.id !== id)
-		setItems(listItems)
-		// save items to local storage for now
-		localStorage.setItem('groceryList', JSON.stringify(listItems))
+		setAndSaveItems(listItems)
+	}
+
+	// function to handle submitting form to add new item
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		// check if blank value submitted
+		if (!newItem) return
+		// add item functionality
+		addItem(newItem)
+		// reset input to blank
+		setNewItem('')
 	}
 
 	return (
 		<div className='App'>
 			<Header />
-			<AddItem />
+			<AddItem
+				newItem={newItem}
+				setNewItem={setNewItem}
+				handleSubmit={handleSubmit}
+			/>
 			<Content
 				items={items}
 				handleCheck={handleCheck}
