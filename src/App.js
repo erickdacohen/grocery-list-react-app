@@ -1,4 +1,5 @@
 import AddItem from './components/AddItem'
+import SearchItem from './components/SearchItem'
 import Content from './components/Content'
 import Footer from './components/Footer'
 import Header from './components/Header'
@@ -11,6 +12,8 @@ function App() {
 	)
 
 	const [newItem, setNewItem] = useState('')
+
+	const [search, setSearch] = useState('')
 
 	const setAndSaveItems = (newItems) => {
 		setItems(newItems)
@@ -63,8 +66,11 @@ function App() {
 				setNewItem={setNewItem}
 				handleSubmit={handleSubmit}
 			/>
+			<SearchItem search={search} setSearch={setSearch} />
 			<Content
-				items={items}
+				items={items.filter((item) =>
+					item.itemName.toLowerCase().includes(search.toLowerCase())
+				)}
 				handleCheck={handleCheck}
 				handleDelete={handleDelete}
 			/>

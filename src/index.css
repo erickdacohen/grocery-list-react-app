@@ -54,30 +54,43 @@ footer {
 	align-items: center;
 }
 
-form {
+form.add-item-form {
 	display: flex;
 	width: 100%;
-
 	justify-content: center;
 	align-items: center;
 	padding: 1rem;
 }
 
-form > button {
+form.add-item-form > button {
 	height: 100%;
 	min-height: 2rem;
 	min-width: 2rem;
 	background-color: var(--background-color-button);
 }
 
-form > button:hover {
+form.add-item-form > button:hover {
 	background-color: var(--background-color-button-hover);
 }
 
-form > input {
+form.add-item-form > input[type='text'] {
 	flex-grow: 1;
 	min-height: 2rem;
 	max-width: 20rem;
+}
+
+form.search-form {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+}
+
+form.search-form > input {
+	flex-grow: 1;
+	min-height: 2rem;
+	max-width: 22rem;
 }
 
 h3.empty-message {
