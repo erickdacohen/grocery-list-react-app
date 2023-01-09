@@ -3,23 +3,42 @@ import SearchItem from './components/SearchItem'
 import Content from './components/Content'
 import Footer from './components/Footer'
 import Header from './components/Header'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 function App() {
+	// API url
+	const API_URL = 'http://localhost:3500/items'
 	// set state for items array
-	const [items, setItems] = useState(
-		JSON.parse(localStorage.getItem('groceryList'))
-	)
-
+	const [items, setItems] = useState([])
 	const [newItem, setNewItem] = useState('')
-
 	const [search, setSearch] = useState('')
+	const [fetchError, setFetchError] = useState(null)
+	const [isLoading, setIsLoading] = useState(true)
 
-	const setAndSaveItems = (newItems) => {
-		setItems(newItems)
-		// save items to local storage for now
-		localStorage.setItem('groceryList', JSON.stringify(newItems))
-	}
+	// for react 18 strict mode change
+	const apiFetchRan = useRef(false)
+
+	useEffect(() => {
+		// define async function to fetch items from db
+		if (apiFetchRan.current === false) {
+			const fetchItems = async () => {
+				try {
+					const response = await fetch(API_URL)
+					if (!response.ok) throw new Error('Did not receive API data.')
+					const listItems = await response.json()
+					setItems(listItems)
+					setFetchError(null)
+				} catch (error) {
+					setFetchError(error.message)
+				} finally {
+					setIsLoading(false)
+				}
+			}
+			fetchItems()
+		}
+
+		return () => (apiFetchRan.current = true)
+	}, [])
 
 	// function to add item
 	const addItem = (item) => {
@@ -30,7 +49,7 @@ function App() {
 		// add to the array
 		const listItems = [...items, myNewItem]
 		// update state with the new array
-		setAndSaveItems(listItems)
+		setItems(listItems)
 	}
 
 	// function to handle checked list item
@@ -38,13 +57,13 @@ function App() {
 		const listItems = items.map((item) =>
 			item.id === id ? { ...item, isChecked: !item.isChecked } : item
 		)
-		setAndSaveItems(listItems)
+		setItems(listItems)
 	}
 
 	// function to delete item from list
 	const handleDelete = (id) => {
 		const listItems = items.filter((item) => item.id !== id)
-		setAndSaveItems(listItems)
+		setItems(listItems)
 	}
 
 	// function to handle submitting form to add new item
@@ -67,13 +86,21 @@ function App() {
 				handleSubmit={handleSubmit}
 			/>
 			<SearchItem search={search} setSearch={setSearch} />
-			<Content
-				items={items.filter((item) =>
-					item.itemName.toLowerCase().includes(search.toLowerCase())
+			<main>
+				{isLoading && <p>Loading...</p>}
+				{fetchError && (
+					<h3 style={{ color: '#f00' }}>{`Error ${fetchError}`}</h3>
 				)}
-				handleCheck={handleCheck}
-				handleDelete={handleDelete}
-			/>
+				{!fetchError && !isLoading && (
+					<Content
+						items={items.filter((item) =>
+							item.itemName.toLowerCase().includes(search.toLowerCase())
+						)}
+						handleCheck={handleCheck}
+						handleDelete={handleDelete}
+					/>
+				)}
+			</main>
 			<Footer length={items.length} />
 		</div>
 	)
